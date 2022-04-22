@@ -1,0 +1,8 @@
+---
+- name: Running Assignment2 Ansible Playbook
+  hosts: linux
+  roles:
+    - datadisk
+    - system_profile
+    - users
+    - webserver

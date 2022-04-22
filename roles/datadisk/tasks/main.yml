@@ -1,0 +1,34 @@
+---
+- name: Creating primary partitions
+  parted:
+    device: "{{ item.device }}"
+    number:  "{{ item.number }}"
+    part_start: "{{ item.part_start }}"
+    part_end: "{{ item.part_end }}"
+    state: present
+  loop: "{{ disk_params }}"
+
+- name: Creating partition directories
+  file:
+    path: "{{ item.path }}"
+    mode: "0755"
+    state: directory
+  loop: "{{ disk_params }}"
+
+- name: Creating xfs filesystem
+  filesystem:
+    fstype: xfs
+    dev: /dev/sdc1
+
+- name: Creating ext4 filesystem
+  filesystem:
+    fstype: ext4
+    dev: /dev/sdc2
+
+- name: Mounting disks with filesystems
+  mount:
+    path: "{{ item.path }}"
+    src: "{{ item.partition }}"
+    fstype: "{{ item.fstype }}"
+    state: mounted
+  loop: "{{ disk_params }}"

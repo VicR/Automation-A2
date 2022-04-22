@@ -1,0 +1,25 @@
+---
+- name: Getting VM Hostname
+  shell: echo $HOSTNAME
+  register: host_name
+
+- name: Installing Apache
+  yum:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  notify: restart_httpd
+
+- name: Copy file with owner and permissions
+  copy:
+    src: vm1.html
+    dest: /var/www/html/index.html
+    mode: '0444'
+  when: host_name.stdout == "linux-vm-8013-1"
+
+- name: Copy file with owner and permissions
+  copy:
+    src: vm2.html
+    dest: /var/www/html/index.html
+    mode: '0444'
+  when: host_name.stdout == "linux-vm-8013-2"

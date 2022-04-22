@@ -1,0 +1,6 @@
+[linux]
+linuxvm1.canadacentral.cloudapp.azure.com
+linuxvm2.canadacentral.cloudapp.azure.com
+
+[os:children]
+linux

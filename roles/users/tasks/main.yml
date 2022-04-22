@@ -1,0 +1,31 @@
+---
+- name: Creating cloudadmins group
+  group:
+    name: "{{ groupname }}"
+    state: present
+
+- name: Creating users and adding them to groups
+  user:
+    name: "{{ item }}"
+    group: "{{ groupname }}"
+    groups: wheel
+    append: yes
+    home: /home/{{ item }} 
+    generate_ssh_key: yes
+    ssh_key_file: .ssh/id_rsa
+    state: present
+  loop: "{{ users }}"
+
+- name: Removing wheel group password requirement
+  copy:
+    content: '%wheel ALL=(ALL:ALL) NOPASSWD:ALL'
+    dest: /etc/sudoers.d/wheel_nopasswd
+    mode: 0440
+    validate: '/usr/sbin/visudo -cf %s'
+
+- name: Distributing SSH keys for both users
+  authorized_key:
+    user: "{{ item }}"
+    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+    state: present
+  loop: "{{ users }}"

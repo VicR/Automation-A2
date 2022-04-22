@@ -1,0 +1,17 @@
+---
+disk_params:
+  - device: /dev/sdc
+    path: /part1
+    partition: /dev/sdc1
+    fstype: xfs
+    part_start: 1MiB
+    part_end: 4GiB
+    number: 1
+
+  - device: /dev/sdc
+    path: /part2
+    partition: /dev/sdc2
+    fstype: ext4
+    part_start: 6GiB 
+    part_end: 10GiB
+    number: 2

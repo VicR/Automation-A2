@@ -1,0 +1,10 @@
+---
+- name: Appending lines to /etc/profile
+  blockinfile:
+    path: /etc/profile
+    insertafter: EOF
+    backup: yes
+    state: present
+    block: |
+      export "#This is a test block added by Ansible.....N01518013"
+      export TMOUT=1800
